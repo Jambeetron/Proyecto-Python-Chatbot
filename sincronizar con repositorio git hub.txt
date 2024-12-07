@@ -1,0 +1,33 @@
+Video:
+Como crear un Repositorio y Subir Proyecto a GITHUB paso a paso
+Cristian Henao
+Pasos del video:
+git init
+git status
+git add.
+git commit -m "Se agrega el proyecto"
+git config --global user.email ""
+git config --global user.name ""
+git commit -m "Se agrega el proyecto"
+git branch -M main
+git remote add origin https://github.com/Jambeetron/Proyecto-Python-Chatbot.git
+git push -u origin main
+
+Subir cambios:
+git status
+git add.
+git commit -m "Se agregan cambios" //Esto es para local
+git push -u origin main //Se suben cambios al repositorio
+git log //Ver commits realizados en el proyecto
+
+Bajar cambios:
+git pull origin main --rebase
+git rebase --continue
+git push origin main
+git status
+
+Explicacion:
+Asegurarte de que todo esté sincronizado con el repositorio remoto:
+git push origin main
+Confirmar que no hay archivos pendientes:
+git status

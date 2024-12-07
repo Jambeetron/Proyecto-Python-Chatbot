@@ -7,6 +7,10 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ProyectoPythonChatbot.settings')
+
+    # Debugging: Verificar configuración
+    print(f'DJANGO_SETTINGS_MODULE: {os.getenv("DJANGO_SETTINGS_MODULE")}')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
-    <link rel="stylesheet" href="/static/style_chatbot.css">
+    <link rel="stylesheet" href="{% static 'chatbot/style_chatbot.css' %}">
 </head>
 
 <body>
@@ -16,7 +17,7 @@
             <input type="text" id="mensaje" placeholder="Escribe tu mensaje aquí...">
             <button id="enviar">Enviar</button>
         </div>
-        <a href="/templates/index.html" class="btn">Volver al inicio</a>
+        <a href="{% url 'home' %}" class="btn">Volver al inicio</a>
     </div>
 
     <script>
@@ -27,11 +28,9 @@
                 return;
             }
 
-            // Mostrar el mensaje en el chat
             const chat = document.getElementById("chat");
             chat.innerHTML += `<div class="usuario">Tú: ${mensaje}</div>`;
 
-            // Enviar el mensaje al backend
             fetch("/procesar_mensaje", {
                 method: "POST",
                 headers: {
@@ -41,14 +40,12 @@
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    // Mostrar la respuesta del bot
                     chat.innerHTML += `<div class="bot">Bot: ${data.respuesta}</div>`;
                 })
                 .catch((error) => {
                     console.error("Error al procesar el mensaje:", error);
                 });
 
-            // Limpiar el campo de entrada
             document.getElementById("mensaje").value = "";
         });
     </script>
