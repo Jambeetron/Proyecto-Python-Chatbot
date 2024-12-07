@@ -1,0 +1,29 @@
+pip install django
+& "C:\Users\Juan Camilo\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts\django-admin" startproject ProyectoPythonChatbot
+
+Crear una Aplicación Django / para la logica
+cd Proyecto Python Chatbot
+python manage.py startapp chatbot
+
+chatbot/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+    models.py
+    tests.py
+    views.py
+python manage.py runserver
+
+python -m venv venv
+.\venv\Scripts\activate
+pip install django mysql-connector
+pip install django mysql-connector-python
+python manage.py runserver
+
+Cambiar la política de ejecución de scripts
+Get-ExecutionPolicy
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\venv\Scripts\activate
+Salir del entorno virtual:
+deactivate
