@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial Emocional</title>
     <link rel="stylesheet" href="{% static 'historial_emocional.css' %}">
+    <link rel="stylesheet" href="{% static 'style_index.css' %}">
+
 </head>
 
 <body>
@@ -32,7 +34,18 @@
         </tbody>
     </table>
     <br>
-    <a href="{% url 'home' %}">Registrar nueva emoción</a>
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+        <!-- Botón para registrar nueva emoción -->
+        <form action="{% url 'registrar_emocion' %}" method="get">
+            <button type="submit" class="btn-naranja">Registrar nueva emoción</button>
+        </form>
+
+        <!-- Botón para eliminar el historial emocional -->
+        <form action="{% url 'eliminar_historial' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-naranja">Eliminar historial emocional</button>
+        </form>
+    </div>
 </body>
 
 </html>

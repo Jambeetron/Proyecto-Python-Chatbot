@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{% static 'auth/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'style_index.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Registro de Usuario</h2>
+
+        <!-- Contenedor de errores del servidor (para mostrar con alertas) -->
+        {% if errors %}
+        <div id="server-errors" data-errors="{{ errors|json_script:'errors' }}"></div>
+        {% endif %}
+
+        <!-- Contenedor de errores en tiempo real -->
+        <div id="feedback"></div>
+
+        <form method="POST" class="form" id="registerForm">
+            {% csrf_token %}
+            <!-- Campo Usuario -->
+            <div class="form-group">
+                <label for="id_username">Usuario</label>
+                <input type="text" id="id_username" name="username" class="form-control"
+                    placeholder="Ingresa tu usuario" required>
+            </div>
+            <!-- Campo Correo Electrónico -->
+            <div class="form-group">
+                <label for="id_email">Correo Electrónico</label>
+                <input type="email" id="id_email" name="email" class="form-control"
+                    placeholder="Ingresa tu correo electrónico" required>
+            </div>
+            <!-- Campo Contraseña -->
+            <div class="form-group">
+                <label for="id_password1">Contraseña</label>
+                <div class="password-container">
+                    <input type="password" id="id_password1" name="password1" class="form-control"
+                        placeholder="Crea una contraseña" required>
+                    <button type="button" class="toggle-password" data-target="#id_password1">Visualizar
+                        contraseña</button>
+                </div>
+                <small class="requirements">
+                    * La contraseña debe contener al menos 8 caracteres, una letra mayúscula, un número y un carácter
+                    especial.
+                </small>
+            </div>
+            <!-- Campo Confirmar Contraseña -->
+            <div class="form-group">
+                <label for="id_password2">Confirmar Contraseña</label>
+                <div class="password-container">
+                    <input type="password" id="id_password2" name="password2" class="form-control"
+                        placeholder="Confirma tu contraseña" required>
+                    <button type="button" class="toggle-password" data-target="#id_password2">Visualizar
+                        contraseña</button>
+                </div>
+            </div>
+            <!-- Botón de Registro -->
+            <button type="submit" class="btn">Registrarse</button>
+        </form>
+        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+    </div>
+    <script src="{% static 'auth/register.js' %}"></script>
+</body>
+
+</html>

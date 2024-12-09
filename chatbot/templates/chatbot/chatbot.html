@@ -1,3 +1,4 @@
+{% load custom_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,43 +13,44 @@
 <body>
     <div class="container">
         <h1>Chatbot</h1>
-        <div id="chat" class="chat"></div>
+        <div id="chat" class="chat">
+            {% if mensajes %}
+            {% for mensaje in mensajes %}
+            <p class="mensaje {{ mensaje.remitente }}">
+                <strong>
+                    {% if mensaje.remitente == "usuario" %}
+                    {{ mensaje.usuario.username|default:"Usuario desconocido" }}:
+                    {% elif mensaje.remitente == "bot" %}
+                    BOT:
+                    {% endif %}
+                </strong>
+                {{ mensaje.mensaje }}
+            </p>
+            {% endfor %}
+            {% else %}
+            <p id="no-mensajes">No hay mensajes previos.</p>
+            {% endif %}
+        </div>
+
         <div class="input-section">
-            <input type="text" id="mensaje" placeholder="Escribe tu mensaje aquí...">
+            <input type="text" id="mensaje" name="mensaje" placeholder="Escribe tu mensaje aquí...">
             <button id="enviar">Enviar</button>
         </div>
-        <a href="{% url 'home' %}" class="btn">Volver al inicio</a>
+
+        <!-- Botón para borrar mensajes -->
+        <form action="{% url 'borrar_mensajes' %}" method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Borrar Mensajes</button>
+        </form>
+
+        <!-- Botón para volver al inicio -->
+        <form action="{% url 'registrar_emocion' %}" method="get" style="margin-top: 10px;">
+            <button type="submit" class="btn btn-danger">Volver al inicio</button>
+        </form>
+
     </div>
 
-    <script>
-        document.getElementById("enviar").addEventListener("click", function () {
-            const mensaje = document.getElementById("mensaje").value;
-            if (mensaje.trim() === "") {
-                alert("Por favor, escribe un mensaje.");
-                return;
-            }
-
-            const chat = document.getElementById("chat");
-            chat.innerHTML += `<div class="usuario">Tú: ${mensaje}</div>`;
-
-            fetch("/procesar_mensaje", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ mensaje: mensaje }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    chat.innerHTML += `<div class="bot">Bot: ${data.respuesta}</div>`;
-                })
-                .catch((error) => {
-                    console.error("Error al procesar el mensaje:", error);
-                });
-
-            document.getElementById("mensaje").value = "";
-        });
-    </script>
+    <script src="{% static 'chatbot/chatbot.js' %}"></script>
 </body>
 
 </html>

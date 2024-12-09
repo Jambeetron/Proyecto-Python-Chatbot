@@ -15,7 +15,7 @@ git push -u origin main
 
 Subir cambios:
 git status
-git add.
+git add .
 git commit -m "Se agregan cambios" //Esto es para local
 git push -u origin main //Se suben cambios al repositorio
 git log //Ver commits realizados en el proyecto

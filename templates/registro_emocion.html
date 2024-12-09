@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Virtual</title>
+    <link rel="stylesheet" href="{% static 'style_index.css' %}">
+    <script>
+        // Validar formulario antes de enviarlo
+        function validarFormulario(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const emocion = document.getElementById("emocion").value;
+            const comentario = document.getElementById("comentario").value.trim();
+
+            if (!nombre || emocion === "Selecciona una emoción" || !comentario) {
+                alert("Por favor, completa todos los campos correctamente.");
+            } else {
+                event.target.submit();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Asistente Virtual de Salud Mental ECCI <span>❤️</span></h1>
+        <form action="{% url 'registrar_emocion' %}" method="POST" onsubmit="validarFormulario(event)">
+            {% csrf_token %}
+            <label for="nombre">¿Cuál es tu nombre?</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre aquí...">
+
+            <label for="emocion">¿Cómo te sientes hoy?</label>
+            <select id="emocion" name="emocion">
+                <option value="Selecciona una emoción">Selecciona una emoción</option>
+                <option value="Estrés">Estrés</option>
+                <option value="Ansiedad">Ansiedad</option>
+                <option value="Tristeza">Tristeza</option>
+                <option value="Alegría">Alegría</option>
+            </select>
+
+            <label for="comentario">¿Quieres compartir algo más sobre cómo te sientes?</label>
+            <textarea id="comentario" name="comentario" rows="3"
+                placeholder="Escribe aquí si deseas compartir más detalles..."></textarea>
+
+            <button type="submit">Registrar emoción</button>
+        </form>
+        <a href="{% url 'ver_historial' %}" class="btn">Ver historial emocional</a>
+        <a href="{% url 'chatbot' %}" class="btn">Ir al Chatbot</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger" style="margin-top: 20px;">Salir de la sesión</a>
+        <p class="note">💡 Recuerda: Si necesitas ayuda profesional, no dudes en contactar a un especialista en salud
+            mental.</p>
+    </div>
+</body>
+
+</html>

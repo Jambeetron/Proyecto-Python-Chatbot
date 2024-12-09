@@ -38,7 +38,7 @@ ROOT_URLCONF = 'ProyectoPythonChatbot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'], # Directorio global de plantillas
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -54,7 +54,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ProyectoPythonChatbot.wsgi.application'
 
 # Database
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -72,7 +72,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+"""
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -91,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_TZ = True
 
@@ -107,3 +107,10 @@ SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 X_FRAME_OPTIONS = 'DENY'
+
+#Define dónde se redirige al usuario no autenticado:
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/registrar_emocion/'
+LOGOUT_REDIRECT_URL = '/login/'
+
+AUTH_USER_MODEL = 'chatbot.CustomUser'
