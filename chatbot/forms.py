@@ -4,34 +4,35 @@ from django.contrib.auth.models import User
 from .models import CustomUser
 from django.core.exceptions import ValidationError
 
-class CustomUserCreationForm(UserCreationForm):
-    role = forms.ChoiceField(
-        choices=CustomUser.ROLES,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label="Rol"
-    )
+class CustomUserCreationForm(forms.ModelForm):
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
 
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'password1', 'password2', 'role')
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
-            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'role': forms.HiddenInput(),
         }
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if CustomUser.objects.filter(username=username).exists():
-            raise ValidationError("El nombre de usuario ya está en uso.")
-        return username
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['role'].initial = 'CLIENT'  # Valor predeterminado para 'role'
+        print(f"Inicializando formulario con role: {self.fields['role'].initial}")
 
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if CustomUser.objects.filter(email=email).exists():
-            raise ValidationError("El correo electrónico ya está registrado.")
-        return email
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden.")
+        return password2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:

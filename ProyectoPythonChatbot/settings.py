@@ -1,6 +1,10 @@
 from pathlib import Path
 from decouple import config
 
+# Configuración para usar pymysql en lugar de mysqlclient
+import pymysql
+pymysql.install_as_MySQLdb()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -110,7 +114,7 @@ X_FRAME_OPTIONS = 'DENY'
 
 #Define dónde se redirige al usuario no autenticado:
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/registrar_emocion/'
+LOGIN_REDIRECT_URL = '/registro_emocion/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 AUTH_USER_MODEL = 'chatbot.CustomUser'

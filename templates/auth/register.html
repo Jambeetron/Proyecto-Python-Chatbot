@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -14,16 +14,24 @@
     <div class="container">
         <h2>Registro de Usuario</h2>
 
-        <!-- Contenedor de errores del servidor (para mostrar con alertas) -->
-        {% if errors %}
-        <div id="server-errors" data-errors="{{ errors|json_script:'errors' }}"></div>
+        <!-- Contenedor de errores del servidor -->
+        {% if form.errors %}
+        <div class="error">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
         {% endif %}
 
-        <!-- Contenedor de errores en tiempo real -->
-        <div id="feedback"></div>
-
-        <form method="POST" class="form" id="registerForm">
+        <form method="POST" id="registerForm">
             {% csrf_token %}
+            <!-- Campo oculto para el rol -->
+            <input type="hidden" name="role" value="CLIENT">
+
             <!-- Campo Usuario -->
             <div class="form-group">
                 <label for="id_username">Usuario</label>
@@ -45,10 +53,6 @@
                     <button type="button" class="toggle-password" data-target="#id_password1">Visualizar
                         contraseña</button>
                 </div>
-                <small class="requirements">
-                    * La contraseña debe contener al menos 8 caracteres, una letra mayúscula, un número y un carácter
-                    especial.
-                </small>
             </div>
             <!-- Campo Confirmar Contraseña -->
             <div class="form-group">
@@ -65,7 +69,23 @@
         </form>
         <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
     </div>
-    <script src="{% static 'auth/register.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButtons = document.querySelectorAll('.toggle-password');
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const target = document.querySelector(this.getAttribute('data-target'));
+                    if (target.type === 'password') {
+                        target.type = 'text';
+                        this.textContent = 'Ocultar contraseña';
+                    } else {
+                        target.type = 'password';
+                        this.textContent = 'Visualizar contraseña';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
