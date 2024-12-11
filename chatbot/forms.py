@@ -1,11 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth.models import User
-from .models import CustomUser
 from django.core.exceptions import ValidationError
+from .models import CustomUser
+import re
 
 class CustomUserCreationForm(forms.ModelForm):
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput,
+        help_text="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial."
+    )
     password2 = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
 
     class Meta:
@@ -18,13 +22,29 @@ class CustomUserCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['role'].initial = 'CLIENT'  # Valor predeterminado para 'role'
-        print(f"Inicializando formulario con role: {self.fields['role'].initial}")
+
+    def clean_password1(self):
+        password = self.cleaned_data.get("password1")
+        
+        # Validaciones de seguridad para la contraseña
+        if len(password) < 8:
+            raise ValidationError("La contraseña debe tener al menos 8 caracteres.")
+        if not re.search(r'[A-Z]', password):
+            raise ValidationError("La contraseña debe incluir al menos una letra mayúscula.")
+        if not re.search(r'[a-z]', password):
+            raise ValidationError("La contraseña debe incluir al menos una letra minúscula.")
+        if not re.search(r'[0-9]', password):
+            raise ValidationError("La contraseña debe incluir al menos un número.")
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+            raise ValidationError("La contraseña debe incluir al menos un carácter especial.")
+        
+        return password
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Las contraseñas no coinciden.")
+            raise ValidationError("Las contraseñas no coinciden.")
         return password2
 
     def save(self, commit=True):

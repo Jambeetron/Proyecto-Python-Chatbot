@@ -1,0 +1,5 @@
+Instala los Build Tools de Microsoft para compilar extensiones de Python
+https://visualstudio.microsoft.com/es/visual-cpp-build-tools/
+pip install mysqlclient
+python -m pip install --upgrade pip
+pip install cryptography

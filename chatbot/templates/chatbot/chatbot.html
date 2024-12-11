@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
-    <link rel="stylesheet" href="{% static 'chatbot/style_chatbot.css' %}">
+    <link rel="stylesheet" href="{% static 'chatbot/style_chatbot.css' %}?v={{ STATIC_VERSION }}">
 </head>
 
 <body>
@@ -16,16 +16,16 @@
         <div id="chat" class="chat">
             {% if mensajes %}
             {% for mensaje in mensajes %}
-            <p class="mensaje {{ mensaje.remitente }}">
-                <strong>
+            <div class="mensaje {{ mensaje.remitente }}">
+                <span class="nombre">
                     {% if mensaje.remitente == "usuario" %}
                     {{ mensaje.usuario.username|default:"Usuario desconocido" }}:
                     {% elif mensaje.remitente == "bot" %}
                     BOT:
                     {% endif %}
-                </strong>
-                {{ mensaje.mensaje }}
-            </p>
+                </span>
+                <span class="contenido">{{ mensaje.mensaje }}</span>
+            </div>
             {% endfor %}
             {% else %}
             <p id="no-mensajes">No hay mensajes previos.</p>
@@ -47,10 +47,9 @@
         <form action="{% url 'registrar_emocion' %}" method="get" style="margin-top: 10px;">
             <button type="submit" class="btn btn-danger">Volver al inicio</button>
         </form>
-
     </div>
 
-    <script src="{% static 'chatbot/chatbot.js' %}"></script>
+    <script src="{% static 'chatbot/chatbot.js' %}?v={{ STATIC_VERSION }}"></script>
 </body>
 
 </html>

@@ -62,13 +62,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Validar contraseñas
-        if (password1Field.value.trim() === '') {
+        const password = password1Field.value.trim();
+        const confirmPassword = password2Field.value.trim();
+
+        if (password === '') {
             errors.push("El campo 'Contraseña' no puede estar vacío.");
+        } else {
+            // Validaciones específicas de la contraseña
+            if (password.length < 8) {
+                errors.push("La contraseña debe tener al menos 8 caracteres.");
+            }
+            if (!/[A-Z]/.test(password)) {
+                errors.push("La contraseña debe incluir al menos una letra mayúscula.");
+            }
+            if (!/[a-z]/.test(password)) {
+                errors.push("La contraseña debe incluir al menos una letra minúscula.");
+            }
+            if (!/[0-9]/.test(password)) {
+                errors.push("La contraseña debe incluir al menos un número.");
+            }
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                errors.push("La contraseña debe incluir al menos un carácter especial.");
+            }
         }
-        if (password2Field.value.trim() === '') {
+
+        if (confirmPassword === '') {
             errors.push("El campo 'Confirmar Contraseña' no puede estar vacío.");
         }
-        if (password1Field.value !== password2Field.value) {
+
+        if (password !== confirmPassword) {
             errors.push("Las contraseñas no coinciden.");
         }
 

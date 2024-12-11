@@ -6,10 +6,10 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
 from .models import Mensaje, Emocion, CustomUser
+from django.views.decorators.cache import never_cache
 
 # Lista de emociones válidas
 emociones_validas = ["Estrés", "Ansiedad", "Tristeza", "Alegría"]
@@ -22,6 +22,7 @@ def home(request):
     return render(request, 'index.html')
 
 # Chatbot
+@never_cache
 @login_required(login_url='/login/')
 def chatbot_view(request):
     """
@@ -85,11 +86,43 @@ def obtener_respuesta(mensaje):
     Genera una respuesta predefinida para el chatbot.
     """
     respuestas = {
-        "hola": "¡Hola! ¿En qué puedo ayudarte?",
-        "como estas": "¡Estoy bien! ¿En qué puedo asistirte hoy?",
-        "adios": "¡Hasta luego! Que tengas un buen día.",
-        "gracias": "¡De nada! Estoy aquí para ayudarte.",
-        "que puedes hacer": "Puedo responder preguntas básicas y ayudarte con lo que necesites.",
+        "hola": "¡Hola! Estoy aquí para escucharte y apoyarte. ¿Cómo te sientes hoy?",
+        "como estas": "Estoy aquí para ayudarte. ¿Qué emoción estás experimentando en este momento?",
+        "adios": "Recuerda que siempre puedes volver cuando lo necesites. ¡Cuídate!",
+        "gracias": "¡De nada! Recuerda que está bien pedir ayuda cuando la necesites.",
+        "que puedes hacer": "Puedo ayudarte a gestionar tus emociones, brindarte consejos y apoyarte en momentos difíciles.",
+        "me siento triste": "Siento que estés pasando por esto. ¿Te gustaría que te comparta algunas técnicas para sentirte mejor?",
+        "estoy ansioso": "La ansiedad puede ser difícil de manejar. ¿Te interesa aprender ejercicios de respiración para calmarte?",
+        "me siento solo": "Recuerda que no estás solo. Estoy aquí para apoyarte y escucharte. ¿Qué puedo hacer por ti?",
+        "no puedo dormir": "El insomnio puede ser complicado. ¿Te gustaría que te comparta algunas recomendaciones para relajarte antes de dormir?",
+        "tengo miedo": "Es normal sentir miedo a veces. ¿Quieres hablar más sobre lo que te preocupa?",
+        "estoy enojado": "El enojo puede ser intenso. ¿Te gustaría conocer formas de canalizarlo de manera saludable?",
+        "me siento abrumado": "Es normal sentirse abrumado a veces. ¿Te gustaría que exploremos juntos cómo priorizar lo que te preocupa?",
+        "necesito ayuda": "Estoy aquí para apoyarte. Cuéntame más sobre lo que necesitas.",
+        "quiero relajarme": "Puedes intentar cerrar los ojos y tomar respiraciones profundas. ¿Te gustaría que te guíe en una breve meditación?",
+        "como gestiono mis emociones": "Gestionar tus emociones puede ser un reto. Te puedo ayudar con estrategias como respiración, meditación o escribir tus pensamientos.",
+        "me siento feliz": "¡Me alegra escucharlo! Comparte lo que te hace feliz para celebrarlo juntos.",
+        "que es la salud mental": "La salud mental es tu bienestar emocional, psicológico y social. Es tan importante como tu salud física.",
+        "estoy estresado": "El estrés puede ser agotador. ¿Quieres que te sugiera formas de reducirlo?",
+        "necesito hablar con alguien": "Hablar con alguien es una excelente idea. Puedo ayudarte o conectarte con recursos útiles.",
+        "que es la ansiedad": "La ansiedad es una respuesta natural del cuerpo al estrés. Si es frecuente, podemos explorar formas de manejarla.",
+        "que es la depresión": "La depresión es un estado emocional complejo. Si sientes que puede estar afectándote, te sugiero buscar apoyo profesional.",
+        "como busco ayuda profesional": "Te puedo ayudar a encontrar recursos y guiarte sobre cómo dar el primer paso para buscar ayuda profesional.",
+        "como manejo el estrés": "El estrés puede manejarse con ejercicios como respiración, actividad física o hablar sobre lo que te preocupa.",
+        "me siento bloqueado": "A veces sentirnos bloqueados puede indicar que necesitamos un descanso. ¿Te gustaría algunas técnicas para despejar tu mente?",
+        "quiero llorar": "Está bien llorar, es una forma natural de liberar emociones. Estoy aquí para escucharte si quieres hablar.",
+        "me siento inseguro": "Todos sentimos inseguridad a veces. ¿Te gustaría hablar sobre lo que te está preocupando?",
+        "que es mindfulness": "El mindfulness es una práctica que ayuda a estar presente en el momento, reduciendo la ansiedad y el estrés.",
+        "me siento agotado": "Sentirse agotado puede ser una señal de que necesitas tiempo para ti. ¿Puedo sugerirte maneras de recargar energías?",
+        "no puedo concentrarme": "La falta de concentración puede ser causada por estrés o cansancio. ¿Quieres que te comparta técnicas para mejorar tu enfoque?",
+        "quiero mejorar mi autoestima": "Mejorar la autoestima lleva tiempo. Podemos explorar afirmaciones positivas y ejercicios para reconocer tu valor.",
+        "que hago si tengo un ataque de panico": "Primero, intenta enfocarte en tu respiración. Inhala lentamente contando hasta 4, sostén por 4, y exhala por 4. Estoy aquí para apoyarte.",
+        "como practico la gratitud": "Practicar la gratitud puede ser simple. Intenta escribir tres cosas por las que te sientes agradecido cada día.",
+        "que es la terapia": "La terapia es un espacio seguro donde un profesional puede ayudarte a explorar y manejar tus emociones.",
+        "como busco apoyo en la universidad": "Puedes buscar ayuda en el departamento de bienestar estudiantil de la ECCI. Ellos ofrecen recursos y apoyo para los estudiantes.",
+        "como hablo con un amigo que está triste": "Sé empático, escucha sin juzgar y hazle saber que estás ahí para apoyarlo. A veces, estar presente es suficiente.",
+        "me siento culpable": "La culpa puede ser una emoción difícil. Reflexionar sobre lo ocurrido y perdonarte a ti mismo puede ayudarte a avanzar.",
+        "que hago si estoy abrumado por las tareas": "Divide las tareas en pasos más pequeños, prioriza lo más importante y date descansos regulares.",
     }
     return respuestas.get(mensaje.lower(), "Lo siento, no entiendo tu mensaje. ¿Puedes intentar de otra forma?")
 
@@ -105,7 +138,7 @@ def register_view(request):
                 user.role = form.cleaned_data['role']
                 user.save()
                 login(request, user)
-                return redirect('home')
+                return redirect('login')
             except Exception as e:
                 print(f"Error al guardar el usuario: {e}")
         else:

@@ -2,9 +2,7 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #1e1e2f;
-    /* Fondo oscuro */
     color: #ffffff;
-    /* Texto blanco */
     margin: 0;
     padding: 0;
     display: flex;
@@ -18,13 +16,10 @@ body {
     max-width: 600px;
     width: 90%;
     background-color: #2a2a3b;
-    /* Fondo del formulario */
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    /* Sombra */
     text-align: center;
-    /* Centrar contenido */
 }
 
 /* Título */
@@ -42,30 +37,53 @@ h1 {
     padding: 10px;
     margin-bottom: 15px;
     min-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
-    /* Permitir desplazamiento si es necesario */
 }
 
-/* Mensajes del usuario */
-.usuario {
-    text-align: right;
-    color: #a4f9c8;
-    /* Verde claro */
+/* Mensajes generales */
+.mensaje {
     margin: 5px 0;
+    display: flex;
+    align-items: flex-start;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
-}
-
-/* Mensajes del bot */
-.bot {
     text-align: left;
+    /* Asegura que el texto se alinee a la izquierda */
+}
+
+/* Nombre del remitente */
+.nombre {
+    font-weight: bold;
     color: #f1fa8c;
-    /* Amarillo claro */
-    margin: 5px 0;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: pre-wrap;
+    margin-right: 10px;
+    min-width: 120px;
+    /* Fija un ancho mínimo para alinear nombres */
+    text-align: left;
+    /* Mantiene el texto alineado a la izquierda */
+}
+
+/* Mensaje del usuario */
+.usuario .nombre {
+    color: #a4f9c8;
+}
+
+.usuario .contenido {
+    color: #ffffff;
+    background-color: #263238;
+    padding: 5px;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+/* Mensaje del bot */
+.bot .contenido {
+    color: #f1fa8c;
+    background-color: #37474f;
+    padding: 5px;
+    border-radius: 8px;
+    max-width: 80%;
 }
 
 /* Sección de entrada de texto y botón */
@@ -79,7 +97,6 @@ h1 {
 
 .input-section input {
     flex: 1;
-    /* Ocupar el espacio disponible */
     padding: 10px;
     border: 1px solid #44475a;
     border-radius: 8px;
@@ -123,12 +140,7 @@ h1 {
     background-color: #d62839;
 }
 
-/* Manejar desbordamiento de texto en los mensajes */
-#chat p {
-    word-wrap: break-word;
-    /* Fuerza el texto a dividirse en líneas si es muy largo */
-    overflow-wrap: break-word;
-    /* Alternativa para navegadores más modernos */
-    white-space: pre-wrap;
-    /* Mantiene los saltos de línea y permite que el texto se ajuste */
+/* Ajustes para eliminar espacio entre los mensajes */
+#chat .mensaje+.mensaje {
+    margin-top: 5px;
 }
