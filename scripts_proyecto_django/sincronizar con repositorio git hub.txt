@@ -21,8 +21,10 @@ git push -u origin main //Se suben cambios al repositorio
 git log //Ver commits realizados en el proyecto
 
 Bajar cambios:
+git status
 git commit -m "Guardando cambios locales" / git reset --hard
 git pull origin main --rebase
+git rebase --abort / Reinicia el rebase (si aplica)
 git rebase --continue
 git push origin main
 git status
