@@ -16,4 +16,8 @@ urlpatterns = [
     path('procesar_mensaje/', views.procesar_mensaje, name='procesar_mensaje'),
     path('check-username/', views.check_username, name='check_username'),
     path('check-email/', views.check_email, name='check_email'),
+    path('editar/<int:id>/', views.editar_emocion, name='editar_emocion'),
+    path('eliminar/<int:id>/', views.eliminar_emocion, name='eliminar_emocion'),
+    path('programar_cita/', views.programar_cita, name='agendar_cita'),
+    path('ver_citas/', views.ver_citas, name='ver_citas'),
 ]

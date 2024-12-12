@@ -1,5 +1,13 @@
 Instala los Build Tools de Microsoft para compilar extensiones de Python
 https://visualstudio.microsoft.com/es/visual-cpp-build-tools/
+pip install pymysql
 pip install mysqlclient
 python -m pip install --upgrade pip
 pip install cryptography
+python -m venv venv
+pip install -r requirements.txt
+pip install django
+
+
+python -m ensurepip
+python -m pip install --upgrade pip

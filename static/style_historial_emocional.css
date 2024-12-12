@@ -9,7 +9,8 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
+    overflow-y: auto;
 }
 
 /* Título */
@@ -152,4 +153,17 @@ a:hover {
 .btn-naranja:hover {
     background-color: #e63946;
     /* Darker orange on hover */
+}
+
+.btn-danger {
+    background-color: #e63946;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #d62839;
 }

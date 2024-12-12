@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Programar Cita{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'style_programar_cita.css' %}">
+<div class="container">
+    <h1>Programar Cita</h1>
+    <form action="{% url 'agendar_cita' %}" method="POST">
+        {% csrf_token %}
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre..." required>
+
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" required>
+
+        <label for="hora">Hora</label>
+        <input type="time" id="hora" name="hora" required>
+
+        <label for="motivo">Motivo</label>
+        <textarea id="motivo" name="motivo" rows="3" placeholder="Describe brevemente el motivo de la cita..."
+            required></textarea>
+
+        <button type="submit">Agendar Cita</button>
+    </form>
+    <div class="btn-container">
+        <a href="{% url 'ver_citas' %}" class="btn">Ver citas programadas</a>
+        <a href="{% url 'registrar_emocion' %}" class="btn">Volver</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2f;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Contenedor */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2e2e3f;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Título */
+h1 {
+    font-size: 2rem;
+    color: #ffd700;
+    margin-bottom: 20px;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #1e1e2f;
+    color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+thead {
+    background-color: #ffd700;
+    color: #000;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #444;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #2e2e4f;
+}
+
+tbody tr:hover {
+    background-color: #3e3e5f;
+    cursor: pointer;
+}
+
+/* Botón Volver */
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #444;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-back:hover {
+    background-color: #666;
+}

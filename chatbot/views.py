@@ -2,7 +2,7 @@ import json
 import unicodedata
 import re
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404,redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
 from .models import Mensaje, Emocion, CustomUser
 from django.views.decorators.cache import never_cache
+from .forms import EmocionForm
+from django.shortcuts import render
+from django.contrib import admin
+from .models import Cita
+import logging
 
 # Lista de emociones válidas
 emociones_validas = ["Estrés", "Ansiedad", "Tristeza", "Alegría"]
@@ -231,3 +236,86 @@ def check_email(request):
     email = request.GET.get('email', None)
     exists = CustomUser.objects.filter(email=email).exists()
     return JsonResponse({'exists': exists})
+
+def editar_emocion(request, id):
+    emocion = get_object_or_404(Emocion, id=id)
+
+    if request.method == 'POST':
+        form = EmocionForm(request.POST, instance=emocion)
+        if form.is_valid():
+            form.save()
+            return redirect('ver_historial')  # Redirige al historial después de guardar
+    else:
+        form = EmocionForm(instance=emocion)
+
+    return render(request, 'editar_emocion.html', {'form': form})
+
+def eliminar_emocion(request, id):
+    emocion = get_object_or_404(Emocion, id=id)
+    emocion.delete()
+    return redirect('ver_historial')
+
+def programar_cita(request):
+    return render(request, 'programar_cita.html')
+
+@login_required(login_url='/login/')
+def ver_citas(request):
+    citas = Cita.objects.all().order_by('fecha', 'hora')
+    print(f"Citas disponibles para {request.user}: {list(citas)}")  # Agrega este print
+    return render(request, 'ver_citas.html', {'citas': citas})
+
+@admin.register(Cita)
+class CitaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'fecha', 'hora', 'motivo', 'usuario')
+    list_filter = ('fecha',)
+    search_fields = ('nombre', 'motivo')
+
+# Configuración del logger
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+@login_required(login_url='/login/')
+def agendar_cita(request):
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        fecha = request.POST.get("fecha")
+        hora = request.POST.get("hora")
+        motivo = request.POST.get("motivo")
+
+        logger.debug(f"Datos recibidos: Nombre={nombre}, Fecha={fecha}, Hora={hora}, Motivo={motivo}")
+        logger.debug(f"Usuario autenticado: {request.user}")
+
+        # Validar campos vacíos
+        if not nombre or not fecha or not hora or not motivo:
+            logger.error("Faltan datos en el formulario.")
+            return render(request, 'programar_cita.html', {
+                'error': 'Por favor, completa todos los campos.',
+            })
+
+        # Validar datos duplicados (opcional)
+        citas_existentes = Cita.objects.filter(usuario=request.user, fecha=fecha, hora=hora)
+        if citas_existentes.exists():
+            logger.warning("El usuario ya tiene una cita programada en la misma fecha y hora.")
+            return render(request, 'programar_cita.html', {
+                'error': 'Ya tienes una cita programada en esta fecha y hora.',
+            })
+
+        try:
+            # Crear una nueva cita
+            nueva_cita = Cita.objects.create(
+                usuario=request.user,
+                nombre=nombre,
+                fecha=fecha,
+                hora=hora,
+                motivo=motivo
+            )
+            logger.info(f"Cita creada exitosamente: {nueva_cita}")
+            return redirect('ver_citas')
+        except Exception as e:
+            logger.error(f"Error al guardar la cita: {e}")
+            return render(request, 'programar_cita.html', {
+                'error': 'Hubo un problema al guardar la cita. Por favor, intenta nuevamente.',
+            })
+
+    logger.debug("Mostrando formulario para programar una cita.")
+    return render(request, 'programar_cita.html')

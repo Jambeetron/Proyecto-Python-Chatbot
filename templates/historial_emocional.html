@@ -1,4 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
+
+{% block title %}Historial emocional{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial Emocional</title>
-    <link rel="stylesheet" href="{% static 'historial_emocional.css' %}">
+    <link rel="stylesheet" href="{% static 'style_historial_emocional.css' %}">
     <link rel="stylesheet" href="{% static 'style_index.css' %}">
 
 </head>
@@ -20,6 +25,7 @@
                 <th>Nombre</th>
                 <th>Emoción</th>
                 <th>Comentario</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -29,9 +35,17 @@
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.emocion }}</td>
                 <td>{{ item.comentario }}</td>
+                <td>
+                    <a href="{% url 'editar_emocion' item.id %}" class="btn btn-warning">Editar</a>
+                    <form action="{% url 'eliminar_emocion' item.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
     <br>
     <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
@@ -49,3 +63,5 @@
 </body>
 
 </html>
+
+{% endblock %}

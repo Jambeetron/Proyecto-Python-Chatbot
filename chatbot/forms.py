@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 from .models import CustomUser
 import re
+from .models import Emocion
 
 class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(
@@ -58,3 +59,8 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'role')
+
+class EmocionForm(forms.ModelForm):
+    class Meta:
+        model = Emocion
+        fields = ['nombre', 'emocion', 'comentario']

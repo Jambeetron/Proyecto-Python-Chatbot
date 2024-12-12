@@ -1,4 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
+
+{% block title %}Registrar Emoción{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,6 +55,7 @@
         </form>
         <a href="{% url 'ver_historial' %}" class="btn">Ver historial emocional</a>
         <a href="{% url 'chatbot' %}" class="btn">Ir al Chatbot</a>
+        <a href="{% url 'agendar_cita' %}" class="btn">Agendar una cita</a>
         <a href="{% url 'logout' %}" class="btn btn-danger" style="margin-top: 20px;">Salir de la sesión</a>
         <p class="note">💡 Recuerda: Si necesitas ayuda profesional, no dudes en contactar a un especialista en salud
             mental.</p>
@@ -57,3 +63,5 @@
 </body>
 
 </html>
+
+{% endblock %}

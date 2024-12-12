@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar emocion{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Emoción</title>
+    <link rel="stylesheet" href="{% static 'style_formulario.css' %}">
+    <link rel="stylesheet" href="{% static 'style_editar_emocion.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Editar Emoción</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            <a href="{% url 'ver_historial' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}

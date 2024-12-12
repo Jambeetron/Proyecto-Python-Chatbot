@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ver Citas Programadas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'style_ver_citas.css' %}">
+<div class="container">
+    <h1>Citas Programadas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Motivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.nombre }}</td>
+                <td>{{ cita.fecha }}</td>
+                <td>{{ cita.hora }}</td>
+                <td>{{ cita.motivo }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay citas programadas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'agendar_cita' %}" class="btn-back">Volver</a>
+</div>
+{% endblock %}
